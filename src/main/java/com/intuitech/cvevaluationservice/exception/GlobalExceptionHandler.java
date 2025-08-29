@@ -12,25 +12,26 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<CvEvaluationResponse> handleMaxSizeException(MaxUploadSizeExceededException exc) {
-        logger.warn("File upload size exceeded: {}", exc.getMessage());
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<CvEvaluationResponse> handleMaxSizeException(
+      MaxUploadSizeExceededException exc) {
+    logger.warn("File upload size exceeded: {}", exc.getMessage());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(CvEvaluationResponse.error(
-                        "File size exceeds the maximum allowed limit of 5MB. Please upload a smaller file.",
-                        null));
-    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(CvEvaluationResponse.error(
+            "File size exceeds the maximum allowed limit of 5MB. Please upload a smaller file.",
+            null));
+  }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CvEvaluationResponse> handleGenericException(Exception exc) {
-        logger.error("Unexpected error occurred: {}", exc.getMessage(), exc);
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<CvEvaluationResponse> handleGenericException(Exception exc) {
+    logger.error("Unexpected error occurred: {}", exc.getMessage(), exc);
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(CvEvaluationResponse.error(
-                        "An unexpected error occurred. Please try again later.",
-                        null));
-    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(CvEvaluationResponse.error(
+            "An unexpected error occurred. Please try again later.",
+            null));
+  }
 }
