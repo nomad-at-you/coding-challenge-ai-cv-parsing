@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: CV Evaluation Service
+  version: 1.0.0
+  description: API for evaluating CV files
+
+paths:
+  /api/cv/upload:
+    post:
+      summary: Upload CV file for evaluation
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CV file to upload
+      responses:
+        '200':
+          description: Successful evaluation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvEvaluationResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CvEvaluationResponse'
+
+components:
+  schemas:
+    CvEvaluationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        filename:
+          type: string
+        score:
+          type: number
+          format: float
+        feedback:
+          type: array
+          items:
+            type: string
